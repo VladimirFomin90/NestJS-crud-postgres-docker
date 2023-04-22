@@ -5,6 +5,7 @@ import { PrismaService } from '../src/prisma/prisma.service';
 import * as pactum from 'pactum';
 import { AuthDto } from '../src/auth/dto';
 import { EditUserDto } from '../src/user/dto';
+import { CreateBookmarkDto } from '../src/bookmark/dto';
 
 describe('App e2e', () => {
     let app: INestApplication;
@@ -110,30 +111,59 @@ describe('App e2e', () => {
                     .expectStatus(200);
             });
         });
+    });
 
-        // describe('Edit user', () => {
-        //     it('should edit user', () => {
-        //         const dto: EditUserDto = {
-        //             firstName: 'immortal',
-        //             email: 'immortal@gmail.com',
-        //         };
+    // describe('Edit user', () => {
+    //     it('should edit user', () => {
+    //         const dto: EditUserDto = {
+    //             firstName: 'potter',
+    //             email: 'potter@gmail.com',
+    //         };
 
+    //         return pactum
+    //             .spec()
+    //             .patch('/user')
+    //             .withHeaders({
+    //                 Authorization: 'Bearer $S{userAt}',
+    //             })
+    //             .withBody(dto)
+    //             .expectStatus(200)
+    //             .expectBodyContains(dto.firstName)
+    //             .expectBodyContains(dto.email);
+    //     });
+    // });
+
+    describe('Bookmarks', () => {
+        // describe('Get empty bookmarks', () => {
+        //     it('should get empty bookmarks', () => {
         //         return pactum
         //             .spec()
-        //             .patch('/user')
+        //             .get('/bookmark')
         //             .withHeaders({
         //                 Authorization: 'Bearer $S{userAt}',
         //             })
-        //             .withBody(dto)
         //             .expectStatus(200)
-        //             .expectBodyContains(dto.firstName)
-        //             .expectBodyContains(dto.email);
+        //             .inspect()
+        //             .expectBody([]);
         //     });
         // });
-    });
 
-    describe('Bookmarks', () => {
-        describe('Create bookmark', () => {});
+        describe('Create bookmark', () => {
+            const dto: CreateBookmarkDto = {
+                title: 'First Bookmark',
+                link: 'yandex.kz',
+            };
+            it('should create bookmark', () => {
+                return pactum
+                    .spec()
+                    .post('/bookmark')
+                    .withHeaders({
+                        Authorization: 'Bearer $S{userAt}',
+                    })
+                    .withBody(dto)
+                    .expectStatus(201);
+            });
+        });
 
         describe('Get bookmarks', () => {});
 
